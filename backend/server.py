@@ -215,7 +215,15 @@ async def create_booking(booking: BookingCreate):
     
     booking_dict = booking.dict()
     booking_obj = Booking(**booking_dict)
-    await db.bookings.insert_one(booking_obj.dict())
+    
+    # Convert date objects to strings for MongoDB storage
+    booking_data = booking_obj.dict()
+    if isinstance(booking_data.get('check_in'), date):
+        booking_data['check_in'] = booking_data['check_in'].isoformat()
+    if isinstance(booking_data.get('check_out'), date):
+        booking_data['check_out'] = booking_data['check_out'].isoformat()
+    
+    await db.bookings.insert_one(booking_data)
     return booking_obj
 
 @api_router.get("/bookings", response_model=List[Booking])
