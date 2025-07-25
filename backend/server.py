@@ -187,7 +187,15 @@ async def search_destinations(search: SearchQuery):
 async def create_hotel(hotel: HotelCreate):
     hotel_dict = hotel.dict()
     hotel_obj = Hotel(**hotel_dict)
-    await db.hotels.insert_one(hotel_obj.dict())
+    
+    # Convert date objects to strings for MongoDB storage
+    hotel_data = hotel_obj.dict()
+    if isinstance(hotel_data.get('available_from'), date):
+        hotel_data['available_from'] = hotel_data['available_from'].isoformat()
+    if isinstance(hotel_data.get('available_to'), date):
+        hotel_data['available_to'] = hotel_data['available_to'].isoformat()
+    
+    await db.hotels.insert_one(hotel_data)
     return hotel_obj
 
 @api_router.get("/hotels", response_model=List[Hotel])
