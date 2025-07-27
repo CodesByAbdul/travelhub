@@ -65,7 +65,7 @@ const Navigation = () => {
               <div className="h-8 w-8 bg-blue-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-lg">✈</span>
               </div>
-              <span className="ml-2 text-xl font-bold text-gray-900">TravelBook</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">TravelEase</span>
             </Link>
           </div>
           <div className="flex items-center space-x-4">
